@@ -31,6 +31,7 @@ function StickyNavigation() {
         "about",
         "work",
         "experience",
+        "contact",
       ];
 
       let current = "home";
@@ -41,6 +42,17 @@ function StickyNavigation() {
         if (element && element.getBoundingClientRect().top <= 150) {
           current = section;
         }
+      }
+      // When the user is on Let's Connect, don't highlight any nav item
+         if (window.location.hash === "#contact" || current === "contact") {
+           current = "";
+         }
+
+      // When the user reaches the final section, the contact section may
+      // never reach the 150px threshold because the page has reached its
+      // maximum scroll position. Force contact to be active at the bottom.
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 80) {
+        current = "contact";
       }
 
       setActiveSection(current);
@@ -88,7 +100,7 @@ function StickyNavigation() {
                   : "text-slate-600 hover:text-blue-600"
               }`}
             >
-              {item.label}
+              {item.href === "#work" ? "Work & Impact" : item.label}
 
               {activeSection === item.href.slice(1) && (
                 <span className="absolute -bottom-1 left-1/2 h-[2px] w-7 -translate-x-1/2 rounded-full bg-blue-600" />
@@ -102,7 +114,7 @@ function StickyNavigation() {
           <a
             href="/resume.pdf"
             download
-            className="hidden items-center gap-1.5 text-[13px] font-medium text-slate-600 transition hover:text-blue-600 sm:flex sm:text-[14px]"
+            className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600 transition hover:text-blue-600 sm:flex sm:text-[14px]"
             aria-label="Download resume"
           >
             <svg
@@ -151,11 +163,12 @@ function RibbonItem({ text }: { text: string }) {
 
 function HeroSection() {
   const phrases = [
-    "I turn data into growth.",
-    "I build strategy from data.",
-    "I solve complex problems.",
-    "I turn insights into action.",
-  ];
+   "Turning insights into action.",
+   "Transforming data into growth.",
+   "Turning analysis into strategy.",
+   "Enabling sales team with data visibility.",
+   "Driving measurable business impact.",
+ ];;
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [text, setText] = useState("");
@@ -716,7 +729,7 @@ function HeroSection() {
           </a>
 
           <a
-            href="https://www.linkedin.com/in/ronit-roy"
+            href="https://www.linkedin.com/in/ronit-roy-b3061a177"
             target="_blank"
             rel="noopener noreferrer"
             className="
@@ -976,17 +989,16 @@ function AboutSection() {
               </p>
 
               <p>
-                I studied{" "}
+                I studied{" "} a
                 <span className="font-medium text-slate-800">
-                  Economics at Ashoka University
+                  Master's in Economics at Ashoka University
                 </span>{" "}
                 from 2019–2021, which shaped the way I think about markets,
                 businesses and decision-making.
               </p>
 
               <p>
-                Today, I work across growth, commercial analytics and sales
-                effectiveness at TBO.com. My work focuses on understanding
+                Today, I work across growth, commercial analytics at TBO.com. My work focuses on understanding
                 where the biggest opportunities are, how teams should
                 prioritize them, and how to measure what actually moves the
                 business.
@@ -2408,7 +2420,7 @@ ${formData.message}
             className="mt-6 flex flex-wrap items-center justify-center gap-3"
           >
             <a
-              href="https://www.linkedin.com/in/ronit-roy"
+              href="https://www.linkedin.com/in/ronit-roy-b3061a177"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3 text-sm font-bold text-white shadow-[0_10px_25px_rgba(79,70,229,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(79,70,229,0.25)]"
@@ -2421,7 +2433,7 @@ ${formData.message}
             </a>
 
             <a
-              href="mailto:hello@ronitroy.dev"
+              href="mailto:royronit.roy3@gmail.com"
               className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-200 hover:bg-white"
             >
               <span>✉</span>
@@ -2708,4 +2720,5 @@ export default function Home() {
     </main>
   );
 }
+
 
