@@ -163,12 +163,11 @@ function RibbonItem({ text }: { text: string }) {
 
 function HeroSection() {
   const phrases = [
-   "Turning insights into action.",
-   "Transforming data into growth.",
-   "Turning analysis into strategy.",
-   "Enabling sales team with data visibility.",
-   "Driving measurable business impact.",
- ];;
+    "Turning commercial data into decisions.",
+    "Connecting strategy with execution.",
+    "Making sales performance visible.",
+    "Driving action through analytics.",
+  ];
 
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [text, setText] = useState("");
@@ -187,7 +186,10 @@ function HeroSection() {
             window.setTimeout(() => setDeleting(true), 1400);
           }
         } else {
-          const nextText = currentPhrase.slice(0, Math.max(0, text.length - 1));
+          const nextText = currentPhrase.slice(
+            0,
+            Math.max(0, text.length - 1)
+          );
           setText(nextText);
 
           if (nextText === "") {
@@ -207,12 +209,7 @@ function HeroSection() {
       id="home"
       className="relative h-[100svh] min-h-[680px] overflow-hidden bg-transparent"
     >
-      {/* ================================================================
-          SUBTLE HERO BACKGROUND
-          ================================================================ */}
-
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* Fine grid */}
         <div
           className="absolute inset-0 opacity-[0.42]"
           style={{
@@ -224,7 +221,6 @@ function HeroSection() {
           }}
         />
 
-        {/* Very soft ambient glows */}
         <motion.div
           className="absolute -left-56 top-[34%] h-[420px] w-[420px] rounded-full bg-blue-200/15 blur-3xl"
           animate={{
@@ -253,9 +249,6 @@ function HeroSection() {
           }}
         />
 
-        {/* ================================================================
-            MOVING RIBBON / FLOWING LINES
-            ================================================================ */}
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox="0 0 1600 850"
@@ -333,7 +326,6 @@ function HeroSection() {
             }}
           />
 
-          {/* A third, barely visible line gives the background depth. */}
           <motion.path
             d="
               M-120 545
@@ -355,10 +347,6 @@ function HeroSection() {
           />
         </svg>
 
-        {/* ================================================================
-            SUBTLE MARKET GRAPH
-            Kept behind the white hero content and clearly visible.
-            ================================================================ */}
         <div
           className="
             absolute
@@ -396,7 +384,6 @@ function HeroSection() {
               </linearGradient>
             </defs>
 
-            {/* Guides */}
             {[55, 110, 165, 220].map((y) => (
               <path
                 key={y}
@@ -406,7 +393,6 @@ function HeroSection() {
               />
             ))}
 
-            {/* Rising animated graph */}
             <motion.path
               d="
                 M0 220
@@ -434,7 +420,6 @@ function HeroSection() {
               }}
             />
 
-            {/* Soft moving area under the graph */}
             <motion.path
               d="
                 M0 220
@@ -460,7 +445,6 @@ function HeroSection() {
             />
           </svg>
 
-          {/* Candlesticks */}
           <div className="absolute inset-0 flex items-end justify-between px-2 pb-4">
             {[
               30, 39, 34, 46, 42, 55, 50, 67, 61, 78, 72, 88, 83, 102, 96,
@@ -471,7 +455,11 @@ function HeroSection() {
                 className="relative w-[4px]"
                 style={{ height: `${height}px` }}
                 animate={{
-                  height: [`${height - 2}px`, `${height + 4}px`, `${height - 2}px`],
+                  height: [
+                    `${height - 2}px`,
+                    `${height + 4}px`,
+                    `${height - 2}px`,
+                  ],
                   opacity: [0.55, 0.8, 0.55],
                 }}
                 transition={{
@@ -488,7 +476,6 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Small floating points */}
         {[
           { left: "14%", top: "28%", delay: 0 },
           { left: "80%", top: "25%", delay: 1 },
@@ -517,9 +504,6 @@ function HeroSection() {
         ))}
       </div>
 
-      {/* ================================================================
-          HERO CONTENT
-          ================================================================ */}
       <div
         className="
           relative
@@ -539,7 +523,7 @@ function HeroSection() {
           sm:px-8
         "
       >
-        {/* Eyebrow */}
+        {/* Updated eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -547,10 +531,9 @@ function HeroSection() {
           className="mb-3 flex items-center gap-2.5 text-[9px] font-semibold uppercase tracking-[0.28em] text-slate-500 sm:text-[10px] md:text-[11px]"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-blue-600/90" />
-          Growth · Analytics · Strategy
+          Commercial Strategy × Growth × Analytics
         </motion.div>
 
-        {/* Name — smaller and safely padded so the final Y never clips. */}
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -586,7 +569,7 @@ function HeroSection() {
           </span>
         </motion.h1>
 
-        {/* Description */}
+        {/* Existing description kept short / unchanged */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -605,11 +588,10 @@ function HeroSection() {
           "
         >
           Manager – Sales Effectiveness at TBO.com, working across analytics,
-          <br className="hidden md:block" />
           commercial strategy, growth and execution.
         </motion.p>
 
-        {/* Typewriter */}
+        {/* Updated typewriter */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -640,7 +622,7 @@ function HeroSection() {
           />
         </motion.div>
 
-        {/* Buttons */}
+        {/* Buttons unchanged */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -761,7 +743,7 @@ function HeroSection() {
           </a>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator unchanged */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -795,10 +777,7 @@ function HeroSection() {
         </motion.div>
       </div>
 
-      {/* ================================================================
-          LIGHT MOVING METRICS TICKER
-          No dark bar — it sits directly on the white hero background.
-          ================================================================ */}
+      {/* Updated ticker */}
       <div className="absolute bottom-16 left-0 z-30 w-full overflow-hidden bg-white/45 py-2 backdrop-blur-[2px] sm:bottom-14">
         <motion.div
           className="flex w-max"
@@ -814,14 +793,14 @@ function HeroSection() {
               key={group}
               className="flex items-center whitespace-nowrap"
             >
-              <RibbonItem text="$65M+ opportunity" />
-              <RibbonItem text="2x GTV growth" />
-              <RibbonItem text="80% partner reactivation" />
-              <RibbonItem text="15.7% ROI improvement" />
-              <RibbonItem text="12+ APAC markets" />
-              <RibbonItem text="Commercial analytics" />
-              <RibbonItem text="Growth strategy" />
-              <RibbonItem text="Data → action" />
+              <RibbonItem text="APAC COMMERCIAL STRATEGY" />
+              <RibbonItem text="GROWTH & SALES EFFECTIVENESS" />
+              <RibbonItem text="REVENUE PERFORMANCE" />
+              <RibbonItem text="TARGET & COST PLANNING" />
+              <RibbonItem text="AGENT GROWTH" />
+              <RibbonItem text="2,000+ AGENCIES" />
+              <RibbonItem text="12+ MARKETS" />
+              <RibbonItem text="DATA → DECISIONS → ACTION" />
             </div>
           ))}
         </motion.div>
@@ -834,27 +813,28 @@ function HeroSection() {
 // ABOUT
 // ============================================================================
 
+
 function AboutSection() {
   const aboutCards = [
     {
       icon: "🧠",
-      title: "Analytical thinker",
-      text: "I break complex problems into clear questions, patterns and decisions.",
+      title: "Commercial Thinking",
+      text: "Looking beyond the metric to understand the business decision behind it.",
     },
     {
       icon: "🎯",
-      title: "Commercial mindset",
-      text: "I care about what the analysis changes — growth, revenue, efficiency and impact.",
+      title: "Growth Mindset",
+      text: "Finding opportunities across acquisition, activation, agency performance and revenue.",
     },
     {
-      icon: "🎸",
-      title: "Music & production",
-      text: "I play guitar, make music and enjoy experimenting with sound and production.",
+      icon: "🤝",
+      title: "People & Execution",
+      text: "Managing internal and external stakeholders to turn insights into action.",
     },
     {
-      icon: "✈️",
-      title: "Travel & exploring",
-      text: "I’m drawn to new places, unfamiliar environments and the perspectives they bring.",
+      icon: "📊",
+      title: "Economics + Analytics",
+      text: "Combining an economics foundation with hands-on commercial analysis and structured problem-solving.",
     },
   ];
 
@@ -865,11 +845,11 @@ function AboutSection() {
     >
       {/* =========================================================
           SUBTLE LIGHT-THEME BACKGROUND
-          Same section geometry and content; only the visual language
-          changes to match the new hero theme.
       ========================================================= */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        {/* Very subtle grid */}
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+      >
         <div
           className="absolute inset-0 opacity-[0.28]"
           style={{
@@ -879,7 +859,6 @@ function AboutSection() {
           }}
         />
 
-        {/* Soft blue / violet ambient light */}
         <motion.div
           animate={{
             x: [0, 35, 0],
@@ -900,7 +879,6 @@ function AboutSection() {
           className="absolute -right-24 bottom-[8%] h-96 w-96 rounded-full bg-violet-400/[0.055] blur-[125px]"
         />
 
-        {/* Subtle flowing lines matching the hero */}
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox="0 0 1440 720"
@@ -934,7 +912,7 @@ function AboutSection() {
       </div>
 
       {/* =========================================================
-          MAIN CONTENT — LAYOUT AND CONTENT UNCHANGED
+          MAIN CONTENT
       ========================================================= */}
       <div className="relative mx-auto max-w-6xl">
         {/* SECTION LABEL */}
@@ -947,7 +925,7 @@ function AboutSection() {
         >
           <span className="h-1.5 w-1.5 rounded-full bg-blue-600 shadow-[0_0_12px_rgba(37,99,235,0.35)]" />
           <span className="text-xs font-semibold uppercase tracking-[0.28em] text-slate-500">
-            About me
+            About the work
           </span>
         </motion.div>
 
@@ -969,7 +947,7 @@ function AboutSection() {
             >
               I work where{" "}
               <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                data meets business.
+                data meets commercial decisions.
               </span>
             </motion.h2>
 
@@ -989,19 +967,20 @@ function AboutSection() {
               </p>
 
               <p>
-                I studied{" "} a
+                I studied{" "}
                 <span className="font-medium text-slate-800">
-                  Master's in Economics at Ashoka University
+                  a Master's in Economics at Ashoka University
                 </span>{" "}
                 from 2019–2021, which shaped the way I think about markets,
                 businesses and decision-making.
               </p>
 
               <p>
-                Today, I work across growth, commercial analytics at TBO.com. My work focuses on understanding
-                where the biggest opportunities are, how teams should
-                prioritize them, and how to measure what actually moves the
-                business.
+                Today, I work across growth, commercial analytics and sales
+                effectiveness at TBO.com. My work spans APAC markets, where I
+                work with Country Managers and sales teams on target setting,
+                agent growth, performance management, commercial planning and
+                revenue opportunities.
               </p>
 
               <p>
@@ -1117,20 +1096,21 @@ function ExperienceSection() {
       title: "Manager – Sales Effectiveness",
       type: "experience",
       description:
-        "Leading sales effectiveness analytics and commercial strategy initiatives. Owning analytics-led growth programs, performance optimization, and data-driven decision systems for the commercial team.",
+        "Working across commercial strategy, growth and sales effectiveness across APAC, using business analysis to shape targets, monitor performance and drive action.",
       achievements: [
-        "Leading predictive and analytics-led initiatives supporting 2× YoY GTV growth.",
-        "Revived dormant partner business by identifying commercial opportunities and driving targeted reactivation initiatives.",
-        "Built performance dashboards and decision systems to improve visibility across sales and commercial teams.",
-        "Working across growth, revenue, sales effectiveness and commercial strategy.",
+        "Lead annual commercial target-setting by combining historical GTV, growth trends, active-agent performance, market potential, seasonality and sales capacity to recommend targets across markets and sales teams.",
+        "Distribute targets alongside associated marketing, travel, office and operating costs, maintaining a healthy cost-to-GTV structure and tracking performance against plan throughout the year.",
+        "Drive new-agent growth by monitoring the registration-to-repeat-booking funnel, identifying bottlenecks and working with sales and marketing teams to improve activation.",
+        "Analyse declining and high-value agencies through GTV, margin and performance trends, identifying commercial, pricing and product issues that require action.",
+        "Present business performance in regular reviews with Country Managers and sales teams, translating analysis into priorities, actions and follow-ups.",
+        "Work across growth, revenue, sales effectiveness and commercial strategy to identify opportunities and improve execution.",
       ],
       tools: [
-        "SQL",
-        "Power BI",
-        "Python",
-        "Excel",
+        "Advanced Excel",
         "Commercial Analytics",
-        "Strategy",
+        "Target Setting",
+        "Growth Strategy",
+        "Performance Management",
       ],
     },
 
@@ -1141,20 +1121,21 @@ function ExperienceSection() {
       title: "Associate Manager – Sales Effectiveness",
       type: "experience",
       description:
-        "Worked across APAC sales effectiveness, commercial analytics and revenue strategy, translating market and customer data into actionable growth opportunities.",
+        "Worked as a bridge between APAC sales teams and the central team, using sales and agency data to support commercial decisions, performance reviews and growth initiatives.",
       achievements: [
-        "Identified $65M+ in revenue opportunity through market-gap and commercial opportunity analysis across APAC.",
-        "Generated analytical frameworks and models used to support sales and revenue decisions.",
-        "Built Power BI dashboards to improve commercial visibility and decision-making.",
-        "Worked across APAC markets including Malaysia and Indonesia on commercial initiatives.",
+        "Analysed sales and agency data across new-agent growth, activation, declining agencies and salesperson performance to identify trends and opportunities.",
+        "Built recurring analysis and presentation materials for sales reviews, providing visibility into GTV performance, active agencies and team performance.",
+        "Supported annual sales target-setting through historical performance analysis and market-level growth assessment.",
+        "Worked with sales teams across APAC to identify performance gaps and follow up on areas requiring action.",
+        "Worked with Marketing on campaign analysis and performance monitoring, using sales data to evaluate campaign effectiveness.",
+        "Supported commercial initiatives across markets including Indonesia, Malaysia, Singapore and Thailand.",
       ],
       tools: [
-        "Power BI",
-        "SQL",
-        "Excel",
-        "Stata",
+        "Advanced Excel",
+        "Sales Analytics",
+        "Commercial Analysis",
         "Market Analysis",
-        "Revenue Strategy",
+        "Performance Tracking",
       ],
     },
 
@@ -1165,18 +1146,18 @@ function ExperienceSection() {
       title: "Business Analyst – Disclosure Audit",
       type: "experience",
       description:
-        "Started my professional career in analytical problem-solving, working on disclosure audit processes and data-driven operational analysis.",
+        "Worked on post-closure disclosure audits, reviewing mortgage loan files for accuracy and compliance with applicable state requirements.",
       achievements: [
-        "Analyzed large datasets to identify discrepancies and improve audit accuracy.",
-        "Worked with cross-functional teams to investigate data and process issues.",
-        "Developed a structured approach to analytical problem-solving and business reporting.",
+        "Reviewed mortgage loan files to identify disclosure issues and verify compliance with applicable state requirements.",
+        "Audited approximately 4–6 loan files per day across different state regulations and disclosure requirements.",
+        "Performed manual checks of documentation and disclosures against required standards and investigated exceptions where necessary.",
+        "Raised queries and worked through exceptions when additional clarification was required during the audit process.",
       ],
       tools: [
-        "SQL",
-        "Excel",
-        "Python",
+        "Advanced Excel",
+        "Disclosure Audit",
+        "Regulatory Compliance",
         "Data Analysis",
-        "Audit Analytics",
       ],
     },
 
@@ -2259,7 +2240,7 @@ Message:
 ${formData.message}
     `.trim();
 
-    window.location.href = `mailto:hello@ronitroy.dev?subject=${encodeURIComponent(
+    window.location.href = `mailto:royronit.roy3@gmail.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
   };
@@ -2393,9 +2374,9 @@ ${formData.message}
             transition={{ duration: 0.6, delay: 0.08 }}
             className="mx-auto max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.055em] text-slate-900 sm:text-6xl md:text-7xl"
           >
-            Let's build something{" "}
+            Always open to a{" "}
             <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              meaningful.
+              good conversation.
             </span>
           </motion.h2>
 
@@ -2405,10 +2386,9 @@ ${formData.message}
             transition={{ duration: 0.5, delay: 0.16 }}
             className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-500 sm:text-[15px]"
           >
-            I work at the intersection of analytics, growth strategy and
-            commercial execution. If you're solving an ambitious problem,
-            building something new, or looking for someone who can turn data
-            into action — let's talk.
+            I enjoy connecting with people working at the intersection of data,
+            business and technology — and exchanging ideas on how better
+            decisions get made.
           </motion.p>
 
           {/* SOCIAL / DIRECT CONTACT BUTTONS */}
@@ -2440,13 +2420,6 @@ ${formData.message}
               Email directly
             </a>
 
-            <a
-              href="mailto:hello@ronitroy.dev?subject=20-minute%20conversation"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-200 hover:bg-white"
-            >
-              <span>◷</span>
-              Book 20 mins
-            </a>
           </motion.div>
         </div>
 
@@ -2471,16 +2444,18 @@ ${formData.message}
                   Prefer to talk directly?
                 </h3>
                 <p className="mt-1 text-xs leading-5 text-slate-500 sm:text-sm">
-                  Send me a message and we can find a time that works.
+                  Pick a time that works for you and we can catch up.
                 </p>
               </div>
             </div>
 
             <a
-              href="mailto:hello@ronitroy.dev?subject=20-minute%20conversation"
+              href="https://calendar.app.google/6BBZCmdUpFTXYHTR9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex shrink-0 items-center justify-center rounded-full border border-blue-200 bg-blue-50 px-5 py-2.5 text-xs font-bold text-blue-700 transition-all duration-300 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
             >
-              Start a conversation →
+              Schedule a conversation →
             </a>
           </div>
         </motion.div>
@@ -2596,7 +2571,7 @@ ${formData.message}
                 </button>
 
                 <a
-                  href="mailto:hello@ronitroy.dev"
+                  href="mailto:royronit.roy3@gmail.com"
                   className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-6 py-3 text-xs font-semibold text-slate-600 transition-all duration-300 hover:border-indigo-200 hover:text-indigo-600"
                 >
                   ✉ Open in mail app
