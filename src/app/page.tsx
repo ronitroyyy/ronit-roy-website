@@ -9,8 +9,115 @@ import {
   impactMetrics,
   careerTimeline,
   skillsFramework,
-  workInitiatives,
 } from "@/lib/data";
+
+// ============================================================================
+// WORK & IMPACT DATA
+// ============================================================================
+
+const workInitiatives = [
+  {
+    number: "01",
+    category: "COMMERCIAL STRATEGY",
+    title: "Sales Enablement",
+    caseTitle: "Sales team execution",
+    context:
+      "Sales teams need a clear commercial plan, the right incentives and timely visibility into performance to execute effectively.",
+    whatIOwned:
+      "Supported annual commercial planning across targets, costs and budgets, designed sales incentive structures, and built tracking that made account-level performance easier for sales teams to act on.",
+    approach:
+      "Worked across target setting, travel and agent-waiver budgets, operational expenses, marketing costs and timelines. Built visibility into churn, delinquent and declining-production accounts, and prepared monthly performance reviews and decks with sales teams.",
+    whatChanged:
+      "Connected commercial planning with day-to-day sales execution by giving teams clearer targets, relevant performance signals and a regular review rhythm.",
+    tools: [
+      "Commercial Planning",
+      "Sales Incentives",
+      "Performance Tracking",
+      "Power BI",
+      "Excel",
+    ],
+    metric: "SALES ENABLEMENT",
+    metricLabel: "planning · execution",
+    cardDescription:
+      "Equipping sales teams with the planning, insights and tools to perform better.",
+  },
+  {
+    number: "02",
+    category: "GROWTH & ACQUISITION",
+    title: "New Agent Funnel",
+    caseTitle: "New-agent growth",
+    context:
+      "New-agent growth can slow when agencies move through registration, activation and repeat-booking stages without clear visibility on where they are getting stuck.",
+    whatIOwned:
+      "Built visibility across the new-agent funnel and helped sales teams identify which agencies needed attention at different stages of the journey.",
+    approach:
+      "Tracked agency progression from registration through activation and repeat bookings, combined sales activity with historical performance, and worked with sales and marketing teams to identify follow-up opportunities.",
+    whatChanged:
+      "Turned the new-agent journey into a measurable funnel that helped sales teams see where growth was getting stuck and where follow-up effort could be prioritised.",
+    tools: [
+      "SQL",
+      "Power BI",
+      "Funnel Analytics",
+      "Sales Effectiveness",
+    ],
+    metric: "NEW AGENT FUNNEL",
+    metricLabel: "registration → repeat bookings",
+    cardDescription:
+      "Turning new-agent acquisition into a measurable growth journey.",
+  },
+  {
+    number: "03",
+    category: "REVENUE & PERFORMANCE",
+    title: "Agency Growth",
+    caseTitle: "Agency performance",
+    status: "Currently Working",
+    context:
+      "Agency performance can change quickly when GTV, margin, pricing or product-related issues move in the wrong direction.",
+    whatIOwned:
+      "Developed an ongoing performance lens to identify agencies showing meaningful changes in GTV, margin and growth trends and surface the relevant commercial signals.",
+    approach:
+      "Monitored agency-level performance, investigated changes in GTV and margin, and connected performance movements with commercial and product signals to identify areas requiring action.",
+    whatChanged:
+      "Created a more focused way to identify agency performance changes and bring relevant growth opportunities or issues to commercial and product stakeholders.",
+    tools: [
+      "SQL",
+      "Power BI",
+      "GTV Analysis",
+      "Margin Analysis",
+      "Commercial Analytics",
+    ],
+    metric: "AGENCY GROWTH",
+    metricLabel: "GTV · margin · growth",
+    cardDescription:
+      "Identifying performance shifts and opportunities to drive agency growth.",
+  },
+  {
+    number: "04",
+    category: "SALES PRODUCTIVITY",
+    title: "Calling Tracker",
+    caseTitle: "Inside-sales prioritisation",
+    status: "Currently Working",
+    context:
+      "Inside-sales teams manage a large long-tail of agencies, making it difficult to decide which agencies should receive attention first.",
+    whatIOwned:
+      "Building a calling tracker and prioritisation framework to help the inside-sales team identify agencies worth contacting based on performance and previous sales activity.",
+    approach:
+      "Using historical agency performance and meeting outcomes to surface potential follow-ups, while allowing sales managers to add specific agencies requiring attention. Working with stakeholders to define and refine the relevant KPIs.",
+    whatChanged:
+      "Creating a data-led workflow for prioritising inside-sales activity rather than relying only on manual selection.",
+    tools: [
+      "SQL",
+      "Power BI",
+      "Sales Analytics",
+      "Prioritisation",
+      "KPI Design",
+    ],
+    metric: "CALLING TRACKER",
+    metricLabel: "data → prioritisation → action",
+    cardDescription:
+      "Helping inside-sales teams focus their effort on the right agencies.",
+  },
+];
 
 // ============================================================================
 // STICKY NAVIGATION
@@ -1170,14 +1277,16 @@ function ExperienceSection() {
       description:
         "Built the analytical and economic foundation that shaped how I approach markets, business problems and data-driven decision-making.",
       achievements: [
-        "Developed a strong foundation in economics, quantitative analysis and structured problem-solving.",
-        "Built a structured way of thinking about markets, incentives and business decisions.",
-        "Applied quantitative and analytical methods to economic and research problems.",
+        "Applied time-series analysis to understand trends, patterns and changes in economic and business data.",
+        "Used game theory and quantitative economics to structure problems around incentives, markets and strategic decisions.",
+        "Built hands-on analytical skills in Python and R for data analysis, statistical work and research problems.",
       ],
       tools: [
-        "Economics",
-        "Quantitative Analysis",
-        "Research",
+        "Python",
+        "R",
+        "Time Series Analysis",
+        "Econometrics",
+        "Statistical Analysis",
         "Data Analysis",
       ],
     },
@@ -1586,7 +1695,9 @@ function ExperienceSection() {
                         <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500" />
 
                         <h4 className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-[10px] font-bold uppercase tracking-[0.2em] text-transparent">
-                          Key Achievements
+                          {selectedRoleData.type === "education"
+                            ? "Key Takeaways"
+                            : "Key Achievements"}
                         </h4>
 
                       </div>
@@ -1635,7 +1746,7 @@ function ExperienceSection() {
                         <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" />
 
                         <h4 className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-[10px] font-bold uppercase tracking-[0.2em] text-transparent">
-                          Tools & Methods
+                          Tools & Skills
                         </h4>
 
                       </div>
@@ -1816,7 +1927,7 @@ function WorkSection() {
             HIGHLIGHT CARDS
             Clean horizontal row — no blue dots / connector line.
             ================================================================ */}
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+        <div className="grid items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
           {workInitiatives.map((initiative, index) => {
             const isActive = activeWork === index;
 
@@ -1833,7 +1944,7 @@ function WorkSection() {
                   onClick={() => setActiveWork(isActive ? null : index)}
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.995 }}
-                  className={`group relative flex min-h-[210px] w-full flex-col overflow-hidden rounded-[18px] border text-left transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${
+                  className={`group relative flex h-[340px] w-full flex-col overflow-hidden rounded-[18px] border text-left transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 ${
                     isActive
                       ? "border-blue-200 bg-white shadow-[0_18px_42px_rgba(37,99,235,0.11)]"
                       : "border-blue-100/80 bg-white/82 shadow-[0_8px_26px_rgba(30,64,175,0.045)] hover:border-blue-200 hover:bg-white hover:shadow-[0_14px_34px_rgba(37,99,235,0.075)]"
@@ -1849,7 +1960,7 @@ function WorkSection() {
 
                   <div className="relative flex h-full flex-col p-5 sm:p-6">
                     {/* Category + action */}
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex h-7 items-start justify-between gap-4">
                       <span className="max-w-[82%] text-[9px] font-bold uppercase leading-4 tracking-[0.18em] text-slate-400">
                         {initiative.category}
                       </span>
@@ -1865,25 +1976,37 @@ function WorkSection() {
                       </span>
                     </div>
 
-                    {/* Metric */}
-                    <div className="mt-5">
-                      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-[clamp(36px,3.7vw,48px)] font-black leading-none tracking-[-0.06em] text-transparent">
-                        {initiative.metric}
-                      </div>
+                    {/* Reserved status slot — keeps all cards aligned */}
+                    <div className="mt-2 flex h-5 items-center">
+                      {initiative.status && (
+                        <div className="flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-600">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          {initiative.status}
+                        </div>
+                      )}
+                    </div>
 
-                      <div className="mt-2 text-[13px] font-bold leading-5 text-slate-800">
-                        {initiative.metricLabel}
+                    {/* Fixed-height title area — same position and same font size */}
+                    <div className="mt-3 h-[112px] overflow-hidden">
+                      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-[24px] sm:text-[26px] font-black leading-[0.96] tracking-[-0.05em] text-transparent break-normal">
+                        {initiative.metric}
                       </div>
                     </div>
 
-                    {/* Problem / project title */}
-                    <div className="mt-auto pt-4">
-                      <div className="text-[12px] font-medium leading-5 text-slate-500">
-                        {initiative.title}
-                      </div>
+                    {/* Supporting line — fixed slot */}
+                    <div className="h-[36px] text-[13px] font-bold leading-5 text-slate-800">
+                      {initiative.metricLabel}
+                    </div>
 
+                    {/* Description — fixed slot */}
+                    <div className="h-[58px] overflow-hidden text-[12px] font-medium leading-5 text-slate-500">
+                      {initiative.cardDescription}
+                    </div>
+
+                    {/* CTA pinned to the same baseline */}
+                    <div className="mt-auto border-t border-blue-50 pt-4">
                       <div
-                        className={`mt-3 text-[9px] font-bold uppercase tracking-[0.18em] transition-colors ${
+                        className={`text-[9px] font-bold uppercase tracking-[0.18em] transition-colors ${
                           isActive
                             ? "text-blue-600"
                             : "text-slate-400 group-hover:text-blue-600"
@@ -1923,16 +2046,20 @@ function WorkSection() {
                       {workInitiatives[activeWork].category}
                     </p>
 
+                    {workInitiatives[activeWork].status && (
+                      <div className="mt-2 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        {workInitiatives[activeWork].status}
+                      </div>
+                    )}
+
                     <h3 className="mt-1 text-xl font-black tracking-[-0.025em] text-slate-900 sm:text-2xl">
-                      {workInitiatives[activeWork].title}
+                      {workInitiatives[activeWork].caseTitle ?? workInitiatives[activeWork].title}
                     </h3>
                   </div>
 
                   <div className="shrink-0 sm:text-right">
-                    <div className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-3xl font-black tracking-[-0.05em] text-transparent">
-                      {workInitiatives[activeWork].metric}
-                    </div>
-                    <div className="text-[10px] font-medium text-slate-500">
+                    <div className="max-w-[240px] text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
                       {workInitiatives[activeWork].metricLabel}
                     </div>
                   </div>
@@ -2204,9 +2331,14 @@ function CurrentlySection() {
 // LET'S CONNECT
 // ============================================================================
 
+
+
 function ContactSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.12 });
+  const isInView = useInView(ref, {
+    once: true,
+    amount: 0.15,
+  });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -2229,70 +2361,42 @@ function ContactSection() {
     e.preventDefault();
 
     const subject =
-      formData.subject || "Potential opportunity";
+      formData.subject || "Potential opportunity / collaboration";
 
     const body = `
 Name: ${formData.name}
 Email: ${formData.email}
-Phone: ${formData.phone}
+Phone / WhatsApp: ${formData.phone}
 
 Message:
 ${formData.message}
     `.trim();
 
-    window.location.href = `mailto:royronit.roy3@gmail.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    window.location.href =
+      `mailto:ronit.roy.we@gmail.com?subject=${encodeURIComponent(subject)}` +
+      `&body=${encodeURIComponent(body)}`;
   };
 
   return (
     <section
       ref={ref}
       id="contact"
-      className="relative overflow-hidden bg-transparent px-5 py-14 sm:px-8 sm:py-16 lg:px-12 lg:py-16"
+      className="relative overflow-hidden px-6 py-20 sm:px-8 md:py-24 lg:px-10"
     >
       {/* ================================================================
-          BACKGROUND — SAME LIGHT ANALYTICS THEME
+          BACKGROUND
           ================================================================ */}
 
       <div
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className="pointer-events-none absolute inset-0"
         aria-hidden="true"
       >
         <div
-          className="absolute inset-0 opacity-[0.28]"
+          className="absolute inset-0 opacity-30"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(37,99,235,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.035) 1px, transparent 1px)",
+              "linear-gradient(rgba(37,99,235,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.025) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
-          }}
-        />
-
-        <motion.div
-          className="absolute -left-40 top-[8%] h-[420px] w-[420px] rounded-full bg-blue-400/[0.055] blur-[120px]"
-          animate={{
-            x: [0, 25, 0],
-            y: [0, -15, 0],
-            opacity: [0.25, 0.4, 0.25],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-
-        <motion.div
-          className="absolute -right-40 bottom-[5%] h-[460px] w-[460px] rounded-full bg-violet-400/[0.05] blur-[130px]"
-          animate={{
-            x: [0, -20, 0],
-            y: [0, 15, 0],
-            opacity: [0.2, 0.35, 0.2],
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "easeInOut",
           }}
         />
 
@@ -2302,244 +2406,269 @@ ${formData.message}
           preserveAspectRatio="none"
           fill="none"
         >
-          <motion.path
-            d="M-100 600 C120 440 250 480 400 590 C550 700 680 660 810 500 C940 340 1060 390 1190 520 C1320 650 1440 620 1700 430"
+          <path
+            d="M-100 250 C180 60 360 120 540 260 C720 400 900 340 1060 170 C1220 0 1400 80 1700 220"
             stroke="#2563eb"
             strokeWidth="1"
-            strokeOpacity="0.06"
-            animate={{
-              d: [
-                "M-100 600 C120 440 250 480 400 590 C550 700 680 660 810 500 C940 340 1060 390 1190 520 C1320 650 1440 620 1700 430",
-                "M-100 580 C120 420 250 460 400 570 C550 680 680 640 810 480 C940 320 1060 370 1190 500 C1320 630 1440 600 1700 410",
-                "M-100 600 C120 440 250 480 400 590 C550 700 680 660 810 500 C940 340 1060 390 1190 520 C1320 650 1440 620 1700 430",
-              ],
-            }}
-            transition={{
-              duration: 24,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            strokeOpacity="0.055"
           />
 
-          <motion.path
-            d="M-100 690 C140 530 260 560 420 650 C580 740 700 710 830 560 C960 410 1080 440 1210 570 C1340 700 1480 670 1700 500"
-            stroke="#8b5cf6"
-            strokeWidth="0.8"
+          <path
+            d="M-100 500 C160 350 320 390 500 500 C680 610 850 590 1030 420 C1210 250 1400 310 1700 470"
+            stroke="#6366f1"
+            strokeWidth="1"
             strokeOpacity="0.045"
-            animate={{ x: [0, 15, 0], y: [0, -8, 0] }}
-            transition={{
-              duration: 27,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+          />
+
+          <path
+            d="M-100 760 C160 620 350 650 540 760 C730 870 930 830 1110 660 C1290 490 1450 540 1700 700"
+            stroke="#8b5cf6"
+            strokeWidth="1"
+            strokeOpacity="0.04"
           />
         </svg>
       </div>
 
       {/* ================================================================
-          CONTENT
+          MAIN CONTAINER
           ================================================================ */}
 
-      <div className="relative z-10 mx-auto max-w-5xl">
+      <div className="relative z-10 mx-auto max-w-6xl">
+
         {/* ================================================================
-            HERO
+            TOP INTRO + QUICK CONTACT
             ================================================================ */}
 
-        <div className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.45 }}
-            className="mb-3 flex items-center justify-center gap-3"
-          >
-            <span className="h-px w-8 bg-gradient-to-r from-blue-500 to-violet-500" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-blue-600 sm:text-xs">
-              Let's Connect
-            </span>
-            <span className="h-px w-8 bg-gradient-to-r from-violet-500 to-blue-500" />
-          </motion.div>
+        <div className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.45fr]">
+
+          {/* LEFT — HEADING */}
 
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-            transition={{ duration: 0.45, delay: 0.05 }}
-            className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/75 px-4 py-2 text-[11px] font-medium text-emerald-600 shadow-sm"
-          >
-            <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.1)]" />
-          </motion.div>
-
-          <motion.h2
             initial={{ opacity: 0, y: 18 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-            transition={{ duration: 0.6, delay: 0.08 }}
-            className="mx-auto max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.055em] text-slate-900 sm:text-6xl md:text-7xl"
+            animate={
+              isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 18 }
+            }
+            transition={{ duration: 0.55 }}
           >
-            Always open to a{" "}
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-              good conversation.
-            </span>
-          </motion.h2>
+            <h2 className="text-5xl font-black leading-[0.98] tracking-[-0.055em] sm:text-6xl">
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                LET&apos;S CONNECT
+              </span>
+            </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-            transition={{ duration: 0.5, delay: 0.16 }}
-            className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-500 sm:text-[15px]"
-          >
-            I enjoy connecting with people working at the intersection of data,
-            business and technology — and exchanging ideas on how better
-            decisions get made.
-          </motion.p>
+            <p className="mt-5 max-w-md text-[15px] leading-6 text-slate-500">
+              Open to meaningful conversations, collaborations,
+              and opportunities where I can add value.
+            </p>
+          </motion.div>
 
-          {/* SOCIAL / DIRECT CONTACT BUTTONS */}
+          {/* RIGHT — QUICK ACTIONS */}
 
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-            transition={{ duration: 0.5, delay: 0.22 }}
-            className="mt-6 flex flex-wrap items-center justify-center gap-3"
+            initial={{ opacity: 0, y: 18 }}
+            animate={
+              isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 18 }
+            }
+            transition={{ duration: 0.55, delay: 0.08 }}
+            className="rounded-[20px] border border-blue-100 bg-white/80 p-5 shadow-[0_12px_35px_rgba(37,99,235,0.05)] backdrop-blur-sm"
           >
-            <a
-              href="https://www.linkedin.com/in/ronit-roy-b3061a177"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3 text-sm font-bold text-white shadow-[0_10px_25px_rgba(79,70,229,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(79,70,229,0.25)]"
-            >
-              <span className="text-[15px] font-black">in</span>
-              Connect on LinkedIn
-              <span className="transition-transform group-hover:translate-x-1">
-                →
-              </span>
-            </a>
+            <div className="grid divide-y divide-blue-100 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
 
-            <a
-              href="mailto:royronit.roy3@gmail.com"
-              className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/70 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-200 hover:bg-white"
-            >
-              <span>✉</span>
-              Email directly
-            </a>
+              {/* EMAIL */}
 
+              <a
+                href="mailto:ronit.roy.we@gmail.com"
+                className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <svg
+                    width="23"
+                    height="23"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <rect
+                      x="3"
+                      y="5"
+                      width="18"
+                      height="14"
+                      rx="2"
+                    />
+                    <path d="m3 7 9 6 9-6" />
+                  </svg>
+                </div>
+
+                <div>
+                  <div className="text-sm font-bold text-slate-800 group-hover:text-blue-600">
+                    Open in mail app
+                  </div>
+
+                  <div className="mt-1 text-xs text-slate-500">
+                    ronit.roy.we@gmail.com
+                  </div>
+                </div>
+              </a>
+
+              {/* LINKEDIN */}
+
+              <a
+                href="https://www.linkedin.com/in/ronitroy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <span className="text-xl font-black">in</span>
+                </div>
+
+                <div>
+                  <div className="text-sm font-bold text-slate-800 group-hover:text-blue-600">
+                    Connect on LinkedIn
+                  </div>
+
+                  <div className="mt-1 text-xs text-slate-500">
+                    linkedin.com/in/ronitroy
+                  </div>
+                </div>
+              </a>
+
+              {/* SCHEDULE */}
+
+              <a
+                href="https://calendar.app.google/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <rect
+                      x="3"
+                      y="4"
+                      width="18"
+                      height="17"
+                      rx="2"
+                    />
+                    <path d="M16 2v4M8 2v4M3 9h18" />
+                    <path d="M8 13h3M8 17h3M14 13h3M14 17h3" />
+                  </svg>
+                </div>
+
+                <div>
+                  <div className="text-sm font-bold text-slate-800 group-hover:text-violet-600">
+                    Schedule a chat
+                  </div>
+
+                  <div className="mt-1 text-xs text-slate-500">
+                    15–30 min call
+                  </div>
+                </div>
+              </a>
+
+            </div>
           </motion.div>
         </div>
 
         {/* ================================================================
-            DIRECT-CONVERSATION CARD
+            MAIN CONTENT — FORM + MENTORSHIP
             ================================================================ */}
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.55, delay: 0.3 }}
-          className="mx-auto mt-8 max-w-3xl rounded-[22px] border border-blue-100 bg-white/80 p-6 shadow-[0_16px_45px_rgba(30,64,175,0.06)] backdrop-blur-sm sm:p-7"
-        >
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-lg">
-                📅
-              </div>
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
 
-              <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  Prefer to talk directly?
-                </h3>
-                <p className="mt-1 text-xs leading-5 text-slate-500 sm:text-sm">
-                  Pick a time that works for you and we can catch up.
-                </p>
-              </div>
+          {/* ============================================================
+              CONTACT FORM
+              ============================================================ */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={
+              isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 20 }
+            }
+            transition={{ duration: 0.55, delay: 0.12 }}
+            className="rounded-[22px] border border-blue-100 bg-white/85 p-7 shadow-[0_16px_45px_rgba(30,64,175,0.05)] backdrop-blur-sm sm:p-8"
+          >
+            <div className="mb-7">
+              <h3 className="text-2xl font-black tracking-[-0.03em] text-slate-900">
+                Start a conversation
+              </h3>
+
+              <p className="mt-2 text-sm text-slate-500">
+                I typically respond within 24–48 hours.
+              </p>
             </div>
 
-            <a
-              href="https://calendar.app.google/6BBZCmdUpFTXYHTR9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center justify-center rounded-full border border-blue-200 bg-blue-50 px-5 py-2.5 text-xs font-bold text-blue-700 transition-all duration-300 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-700"
-            >
-              Schedule a conversation →
-            </a>
-          </div>
-        </motion.div>
+            <form onSubmit={handleSubmit} className="space-y-5">
 
-        {/* ================================================================
-            MESSAGE FORM
-            ================================================================ */}
+              {/* NAME + EMAIL */}
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
-          transition={{ duration: 0.55, delay: 0.38 }}
-          className="mx-auto mt-5 max-w-3xl overflow-hidden rounded-[22px] border border-blue-100 bg-white/85 shadow-[0_16px_45px_rgba(30,64,175,0.06)] backdrop-blur-sm"
-        >
-          <div className="p-6 sm:p-8">
-            <h3 className="text-xl font-black tracking-[-0.025em] text-slate-900">
-              Send me a message
-            </h3>
+              <div className="grid gap-5 sm:grid-cols-2">
 
-            <p className="mt-2 max-w-xl text-xs leading-5 text-slate-500 sm:text-sm">
-              Tell me about what you're working on, the challenge you're
-              facing, or the opportunity you have in mind.
-            </p>
-
-            <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                    Your name *
+                    Name *
                   </label>
+
                   <input
                     required
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Your name"
-                    className="w-full rounded-xl border border-blue-100 bg-white/80 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
+                    className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
                   />
                 </div>
 
                 <div>
                   <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                    Your email *
+                    Email *
                   </label>
+
                   <input
                     required
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="you@company.com"
-                    className="w-full rounded-xl border border-blue-100 bg-white/80 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                    Phone / WhatsApp
-                  </label>
-                  <input
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+91 XXXXX XXXXX"
-                    className="w-full rounded-xl border border-blue-100 bg-white/80 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
+                    placeholder="your.email@domain.com"
+                    className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
                   />
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                    Subject *
-                  </label>
-                  <input
-                    required
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    placeholder="Growth role at [Company]"
-                    className="w-full rounded-xl border border-blue-100 bg-white/80 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
-                  />
-                </div>
               </div>
+
+              {/* SUBJECT */}
+
+              <div>
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                  Subject *
+                </label>
+
+                <input
+                  required
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  placeholder="Growth role at [Company] / Collaboration / General inquiry"
+                  className="w-full rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
+                />
+              </div>
+
+              {/* MESSAGE */}
 
               <div>
                 <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
@@ -2551,10 +2680,10 @@ ${formData.message}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  rows={6}
+                  rows={5}
                   maxLength={2000}
                   placeholder="Tell me about what you're working on, the challenge you're facing, or the opportunity you have in mind..."
-                  className="w-full resize-none rounded-xl border border-blue-100 bg-white/80 px-4 py-2.5 text-sm leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
+                  className="w-full resize-none rounded-xl border border-blue-100 bg-white px-4 py-3 text-sm leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50"
                 />
 
                 <div className="mt-1 text-right text-[10px] text-slate-400">
@@ -2562,30 +2691,187 @@ ${formData.message}
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+              {/* SEND */}
+
+              <div className="flex items-center gap-5 pt-1">
+
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3 text-xs font-bold text-white shadow-[0_8px_22px_rgba(79,70,229,0.15)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(79,70,229,0.22)]"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-7 py-3 text-sm font-bold text-white shadow-[0_10px_25px_rgba(79,70,229,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(79,70,229,0.22)]"
                 >
                   Send message →
                 </button>
 
-                <a
-                  href="mailto:royronit.roy3@gmail.com"
-                  className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white px-6 py-3 text-xs font-semibold text-slate-600 transition-all duration-300 hover:border-indigo-200 hover:text-indigo-600"
-                >
-                  ✉ Open in mail app
-                </a>
+                <div className="flex items-center gap-2 text-xs leading-4 text-slate-400">
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                  >
+                    <rect
+                      x="5"
+                      y="10"
+                      width="14"
+                      height="10"
+                      rx="2"
+                    />
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                  </svg>
 
-                <span className="text-[10px] text-slate-400">
-                  * required
-                </span>
+                  <span>
+                    Your details are private
+                    <br />
+                    and never shared.
+                  </span>
+                </div>
+
               </div>
             </form>
-          </div>
 
-          <div className="h-[3px] w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
-        </motion.div>
+            <div className="mt-7 h-[3px] w-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
+          </motion.div>
+
+          {/* ============================================================
+              MENTORSHIP
+              ============================================================ */}
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={
+              isInView
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 20 }
+            }
+            transition={{ duration: 0.55, delay: 0.18 }}
+            className="rounded-[22px] border border-blue-100 bg-gradient-to-br from-white/90 via-white/85 to-violet-50/40 p-7 shadow-[0_16px_45px_rgba(30,64,175,0.05)] backdrop-blur-sm sm:p-8"
+          >
+
+            {/* TITLE */}
+
+            <div className="flex items-center gap-4">
+
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600">
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                >
+                  <path d="M3 7h18l-9-4-9 4Z" />
+                  <path d="M5 8v6M9 8v6M15 8v6M19 8v6" />
+                  <path d="M3 15h18M5 18h14" />
+                </svg>
+              </div>
+
+              <h3 className="text-2xl font-black tracking-[-0.03em] text-slate-900">
+                Mentorship & Guidance
+              </h3>
+
+            </div>
+
+            {/* VALUE PROPOSITION */}
+
+            <div className="mt-7">
+
+              <h4 className="text-lg font-bold text-violet-600">
+                Helping students make confident, informed career moves.
+              </h4>
+
+              <p className="mt-3 text-[15px] leading-7 text-slate-600">
+                I mentor students exploring analytics, strategy, and growth —
+                helping them clarify career paths, strengthen analytical
+                thinking, and turn academic learning into practical,
+                career-relevant skills.
+              </p>
+
+            </div>
+
+            {/* WHAT I CAN HELP WITH */}
+
+            <div className="mt-6 space-y-3">
+
+              {[
+                "Clarify career paths and build a practical learning roadmap",
+                "Strengthen analytical thinking and problem-solving",
+                "Review projects, resumes, or interview preparation",
+                "Navigate early-career decisions with confidence",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="flex items-start gap-3 text-sm text-slate-600"
+                >
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-violet-500 text-violet-500">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    >
+                      <path d="m5 12 4 4L19 6" />
+                    </svg>
+                  </span>
+
+                  <span>{item}</span>
+                </div>
+              ))}
+
+            </div>
+
+            {/* DIVIDER */}
+
+            <div className="my-6 h-px bg-blue-100" />
+
+            {/* CLOSING VALUE */}
+
+            <div className="flex items-start gap-4">
+
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600">
+                <svg
+                  width="23"
+                  height="23"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                >
+                  <path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z" />
+                  <path d="m19 16 .8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z" />
+                </svg>
+              </div>
+
+              <p className="max-w-md text-sm font-bold leading-6 text-slate-800">
+                Real-world perspective, honest guidance, and actionable
+                feedback — helping turn potential into progress.
+              </p>
+
+            </div>
+
+            {/* MENTORSHIP CTA */}
+
+            <div className="mt-7">
+
+              <a
+                href="mailto:ronit.roy.we@gmail.com?subject=Student%20Mentorship"
+                className="inline-flex items-center rounded-full border border-violet-400 bg-white px-6 py-3 text-sm font-bold text-violet-600 transition-all duration-300 hover:-translate-y-0.5 hover:bg-violet-50"
+              >
+                Let&apos;s connect for mentorship →
+              </a>
+
+              <p className="mt-4 text-xs text-slate-400">
+                Open in mail app with mentorship as the subject
+              </p>
+
+            </div>
+
+          </motion.div>
+        </div>
 
         {/* ================================================================
             FOOTER
@@ -2593,18 +2879,23 @@ ${formData.message}
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-8 border-t border-blue-100 pt-5 text-center"
+          animate={
+            isInView
+              ? { opacity: 1 }
+              : { opacity: 0 }
+          }
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="mt-10 border-t border-blue-100 pt-5 text-center"
         >
-          <div className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-400">
+          <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
             RONIT ROY · GROWTH · ANALYTICS · STRATEGY
           </div>
 
-          <div className="mt-2 text-[10px] text-slate-400">
+          <div className="mt-2 text-xs text-slate-400">
             Turning data into growth.
           </div>
         </motion.div>
+
       </div>
     </section>
   );
