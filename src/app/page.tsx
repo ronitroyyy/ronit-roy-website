@@ -2373,7 +2373,7 @@ ${formData.message}
     `.trim();
 
     window.location.href =
-      `mailto:ronit.roy.we@gmail.com?subject=${encodeURIComponent(subject)}` +
+      `mailto:royronit.roy3@gmail.com?subject=${encodeURIComponent(subject)}` +
       `&body=${encodeURIComponent(body)}`;
   };
 
@@ -2481,7 +2481,7 @@ ${formData.message}
               {/* EMAIL */}
 
               <a
-                href="mailto:ronit.roy.we@gmail.com"
+                href="mailto:royronit.roy3@gmail.com"
                 className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
               >
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
@@ -2510,7 +2510,7 @@ ${formData.message}
                   </div>
 
                   <div className="mt-1 text-xs text-slate-500">
-                    ronit.roy.we@gmail.com
+                    Send me an email
                   </div>
                 </div>
               </a>
@@ -2518,7 +2518,7 @@ ${formData.message}
               {/* LINKEDIN */}
 
               <a
-                href="https://www.linkedin.com/in/ronitroy"
+                href="https://www.linkedin.com/in/ronit-roy-b3061a177"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
@@ -2533,7 +2533,7 @@ ${formData.message}
                   </div>
 
                   <div className="mt-1 text-xs text-slate-500">
-                    linkedin.com/in/ronitroy
+                    
                   </div>
                 </div>
               </a>
@@ -2541,7 +2541,7 @@ ${formData.message}
               {/* SCHEDULE */}
 
               <a
-                href="https://calendar.app.google/"
+                href="https://calendar.app.google/6BBZCmdUpFTXYHTR9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 px-2 py-3 transition-all sm:px-5 sm:py-1"
@@ -2858,7 +2858,7 @@ ${formData.message}
             <div className="mt-7">
 
               <a
-                href="mailto:ronit.roy.we@gmail.com?subject=Student%20Mentorship"
+                href="mailto:royronit.roy3@gmail.com?subject=Student%20Mentorship"
                 className="inline-flex items-center rounded-full border border-violet-400 bg-white px-6 py-3 text-sm font-bold text-violet-600 transition-all duration-300 hover:-translate-y-0.5 hover:bg-violet-50"
               >
                 Let&apos;s connect for mentorship →
