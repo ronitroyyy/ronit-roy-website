@@ -128,100 +128,8 @@ const workInitiatives = [
 function StickyNavigation() {
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
-  const [resumeSubmitted, setResumeSubmitted] = useState(false);
-  const [resumeSubmitting, setResumeSubmitting] = useState(false);
-  const [resumeForm, setResumeForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    linkedin: "",
-    intent: "",
-    role: "",
-    message: "",
-  });
+  const [showResumeRequest, setShowResumeRequest] = useState(false);
 
-  const handleResumeChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setResumeForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleResumeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setResumeSubmitting(true);
-
-    const payload = {
-      ...resumeForm,
-      source: "resume_request",
-      submittedAt: new Date().toISOString(),
-    };
-
-    try {
-      const endpoint = process.env.NEXT_PUBLIC_RESUME_FORM_ENDPOINT;
-
-      if (endpoint) {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-          throw new Error("Resume request could not be submitted.");
-        }
-      } else {
-        // Fallback: open an email draft if no form endpoint is configured yet.
-        const subject = `Resume request — ${resumeForm.name}`;
-        const body = `
-Name: ${resumeForm.name}
-Email: ${resumeForm.email}
-Company: ${resumeForm.company || "Not provided"}
-LinkedIn: ${resumeForm.linkedin || "Not provided"}
-Intent: ${resumeForm.intent}
-Role / Opportunity: ${resumeForm.role || "Not provided"}
-
-Additional context:
-${resumeForm.message || "Not provided"}
-        `.trim();
-
-        window.location.href =
-          `mailto:royronit.roy3@gmail.com?subject=${encodeURIComponent(subject)}` +
-          `&body=${encodeURIComponent(body)}`;
-      }
-
-      setResumeSubmitted(true);
-
-      // Give the success state a moment before starting the download.
-      window.setTimeout(() => {
-        const link = document.createElement("a");
-        link.href = "/resume.pdf";
-        link.download = "Ronit-Roy-Resume.pdf";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }, 450);
-    } catch (error) {
-      console.error(error);
-      window.alert(
-        "Something went wrong while submitting your request. Please try again."
-      );
-    } finally {
-      setResumeSubmitting(false);
-    }
-  };
-
-  const closeResumeModal = () => {
-    if (resumeSubmitting) return;
-    setIsResumeOpen(false);
-    setResumeSubmitted(false);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -314,8 +222,8 @@ ${resumeForm.message || "Not provided"}
         <div className="ml-auto flex items-center gap-2.5 sm:gap-4">
           <button
             type="button"
-            onClick={() => setIsResumeOpen(true)}
-            className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600 transition hover:text-blue-600 sm:text-[14px]"
+            onClick={() => setShowResumeRequest(true)}
+            className="flex items-center gap-1.5 text-[13px] font-medium text-slate-600 transition hover:text-blue-600 sm:flex sm:text-[14px]"
             aria-label="Request resume"
           >
             <svg
@@ -344,249 +252,217 @@ ${resumeForm.message || "Not provided"}
           </a>
         </div>
       </div>
-
-      {/* ================================================================
-          RESUME REQUEST MODAL
-          Same light / white visual language as the rest of the portfolio.
-          The form captures visitor details + intent before the PDF downloads.
-          ================================================================ */}
+    
       <AnimatePresence>
-        {isResumeOpen && (
-          <motion.div
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/25 px-4 py-6 backdrop-blur-md"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onMouseDown={(e) => {
-              if (e.target === e.currentTarget) closeResumeModal();
-            }}
-          >
-            <motion.div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="resume-request-title"
-              initial={{ opacity: 0, y: 18, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.98 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative max-h-[92vh] w-full max-w-[560px] overflow-y-auto rounded-[24px] border border-blue-100/90 bg-white shadow-[0_30px_90px_rgba(30,64,175,0.18)]"
-            >
-              {/* Modal accent */}
-              <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
-
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-5">
-                  <div>
-                    <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-blue-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-blue-600" />
-                      Resume access
-                    </div>
-                    <h2
-                      id="resume-request-title"
-                      className="text-2xl font-black tracking-[-0.035em] text-slate-900 sm:text-3xl"
-                    >
-                      Let&apos;s make sure it&apos;s a fit.
-                    </h2>
-                    <p className="mt-2 max-w-[470px] text-sm leading-6 text-slate-500">
-                      Share a little context before accessing my resume. It helps me understand who is reaching out and why.
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={closeResumeModal}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-lg text-slate-400 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
-                    aria-label="Close resume request"
-                  >
-                    ×
-                  </button>
-                </div>
-
-                <AnimatePresence mode="wait" initial={false}>
-                  {resumeSubmitted ? (
-                    <motion.div
-                      key="success"
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="py-12 text-center"
-                    >
-                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                        <svg
-                          width="25"
-                          height="25"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <path d="m5 12 4 4L19 6" />
-                        </svg>
-                      </div>
-                      <h3 className="mt-5 text-xl font-black text-slate-900">
-                        Thanks — your resume is on its way.
-                      </h3>
-                      <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
-                        Your details have been captured and the resume download should start automatically.
-                      </p>
-                    </motion.div>
-                  ) : (
-                    <motion.form
-                      key="form"
-                      onSubmit={handleResumeSubmit}
-                      initial={{ opacity: 1 }}
-                      animate={{ opacity: 1 }}
-                      className="mt-7 space-y-5"
-                    >
-                      {/* NAME + EMAIL */}
-                      <div className="grid gap-5 sm:grid-cols-2">
-                        <div>
-                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            Full name *
-                          </label>
-                          <input
-                            required
-                            name="name"
-                            value={resumeForm.name}
-                            onChange={handleResumeChange}
-                            placeholder="Jane Smith"
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            Email *
-                          </label>
-                          <input
-                            required
-                            type="email"
-                            name="email"
-                            value={resumeForm.email}
-                            onChange={handleResumeChange}
-                            placeholder="jane@company.com"
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                          />
-                        </div>
-                      </div>
-
-                      {/* COMPANY + ROLE */}
-                      <div className="grid gap-5 sm:grid-cols-2">
-                        <div>
-                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            Company
-                          </label>
-                          <input
-                            name="company"
-                            value={resumeForm.company}
-                            onChange={handleResumeChange}
-                            placeholder="Company name"
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                            Role / opportunity
-                          </label>
-                          <input
-                            name="role"
-                            value={resumeForm.role}
-                            onChange={handleResumeChange}
-                            placeholder="e.g. Growth Manager"
-                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                          />
-                        </div>
-                      </div>
-
-                      {/* LINKEDIN */}
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                          LinkedIn URL <span className="text-slate-400">(recommended)</span>
-                        </label>
-                        <input
-                          type="url"
-                          name="linkedin"
-                          value={resumeForm.linkedin}
-                          onChange={handleResumeChange}
-                          placeholder="https://linkedin.com/in/yourprofile"
-                          className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                        />
-                      </div>
-
-                      {/* INTENT */}
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                          What brings you here? *
-                        </label>
-                        <select
-                          required
-                          name="intent"
-                          value={resumeForm.intent}
-                          onChange={handleResumeChange}
-                          className={`w-full appearance-none rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm outline-none transition-all focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50 ${
-                            resumeForm.intent ? "text-slate-800" : "text-slate-400"
-                          }`}
-                        >
-                          <option value="" disabled>
-                            Select an option
-                          </option>
-                          <option value="Hiring / recruitment">Hiring / recruitment</option>
-                          <option value="Potential collaboration">Potential collaboration</option>
-                          <option value="Networking">Networking</option>
-                          <option value="Mentorship / career discussion">Mentorship / career discussion</option>
-                          <option value="Just exploring">Just exploring</option>
-                        </select>
-                      </div>
-
-                      {/* CONTEXT */}
-                      <div>
-                        <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
-                          Anything I should know? <span className="text-slate-400">(optional)</span>
-                        </label>
-                        <textarea
-                          name="message"
-                          value={resumeForm.message}
-                          onChange={handleResumeChange}
-                          rows={3}
-                          maxLength={500}
-                          placeholder="e.g. Hiring for a growth role at our company, exploring collaboration..."
-                          className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-300 focus:border-indigo-300 focus:bg-white focus:ring-4 focus:ring-indigo-50"
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={resumeSubmitting}
-                        className="w-full rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-3.5 text-sm font-bold text-white shadow-[0_10px_25px_rgba(79,70,229,0.16)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(79,70,229,0.22)] disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {resumeSubmitting ? "Submitting…" : "Request Resume →"}
-                      </button>
-
-                      <div className="flex items-center justify-center gap-2 text-center text-[11px] leading-4 text-slate-400">
-                        <svg
-                          width="15"
-                          height="15"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.7"
-                        >
-                          <rect x="5" y="10" width="14" height="10" rx="2" />
-                          <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-                        </svg>
-                        Your details are only used to understand the request. No spam.
-                      </div>
-                    </motion.form>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </motion.div>
+        {showResumeRequest && (
+          <ResumeRequestModal onClose={() => setShowResumeRequest(false)} />
         )}
       </AnimatePresence>
-    </nav>
+</nav>
   );
 }
+
+// ============================================================================
+// RESUME REQUEST MODAL
+// ============================================================================
+
+function ResumeRequestModal({ onClose }: { onClose: () => void }) {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitError("");
+    setSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const googleFormUrl =
+        "https://docs.google.com/forms/d/e/1FAIpQLSc23pEkGosch0XcXgFLOmC4FMb7yvmBWSbbvoBNzBCK9qpmZQ/formResponse";
+
+      const googleForm = document.createElement("form");
+      googleForm.method = "POST";
+      googleForm.action = googleFormUrl;
+      googleForm.target = "google-resume-request";
+      googleForm.style.display = "none";
+
+      const fields = {
+        "entry.716595562": String(formData.get("name") ?? ""),
+        "entry.176146859": String(formData.get("email") ?? ""),
+        "entry.1244225339": String(formData.get("company") ?? ""),
+        "entry.278928701": String(formData.get("intent") ?? ""),
+        "entry.2124120142": String(formData.get("role") ?? ""),
+        "entry.576042036": String(formData.get("linkedin") ?? ""),
+        "entry.1002792976": String(formData.get("message") ?? ""),
+      };
+
+      Object.entries(fields).forEach(([name, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = value;
+        googleForm.appendChild(input);
+      });
+
+      let iframe = document.getElementById(
+        "google-resume-request"
+      ) as HTMLIFrameElement | null;
+
+      if (!iframe) {
+        iframe = document.createElement("iframe");
+        iframe.id = "google-resume-request";
+        iframe.name = "google-resume-request";
+        iframe.style.display = "none";
+        document.body.appendChild(iframe);
+      }
+
+      document.body.appendChild(googleForm);
+      googleForm.submit();
+      googleForm.remove();
+
+      setSubmitted(true);
+    } catch {
+      setSubmitError(
+        "Something went wrong. Please try again in a moment."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/35 px-4 py-6 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 18, scale: 0.98 }}
+        transition={{ duration: 0.2 }}
+        className="relative max-h-[92vh] w-full max-w-xl overflow-y-auto rounded-[22px] border border-blue-100 bg-white p-6 shadow-[0_25px_80px_rgba(15,23,42,0.18)] sm:p-8"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resume-request-title"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 text-slate-400 transition hover:border-blue-200 hover:text-blue-600"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+        {!submitted ? (
+          <>
+            <div className="pr-10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-600">
+                Resume Request
+              </p>
+              <h2 id="resume-request-title" className="mt-2 text-2xl font-black tracking-[-0.03em] text-slate-900">
+                What brings you here?
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                Share a little context before accessing my resume. It helps me understand who is reaching out and why.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+              <input type="hidden" name="_subject" value="New Resume Request" />
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold text-slate-700">Name *</span>
+                  <input name="name" required className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" placeholder="Your name" />
+                </label>
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold text-slate-700">Work email *</span>
+                  <input name="email" type="email" required className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" placeholder="you@company.com" />
+                </label>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold text-slate-700">Company *</span>
+                  <input name="company" required className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" placeholder="Company name" />
+                </label>
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold text-slate-700">What brings you here? *</span>
+                  <select name="intent" required defaultValue="" className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100">
+                    <option value="" disabled>Select one</option>
+                    <option>I’m hiring for a role</option>
+                    <option>I’m a recruiter / talent partner</option>
+                    <option>I’m exploring a collaboration</option>
+                    <option>I’m interested in working together</option>
+                    <option>I’m looking for mentorship</option>
+                    <option>Just exploring the profile</option>
+                  </select>
+                </label>
+              </div>
+
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-slate-700">Role / opportunity *</span>
+                <input name="role" required className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" placeholder="e.g. Growth Strategy, Commercial Analytics" />
+              </label>
+
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-slate-700">LinkedIn / website *</span>
+                <input name="linkedin" type="url" required className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100" placeholder="https://..." />
+              </label>
+
+              <label className="block">
+                <span className="mb-1.5 block text-xs font-semibold text-slate-700">
+                  Anything I should know? <span className="font-normal text-slate-400">(optional)</span>
+                </span>
+                <textarea
+                  name="message"
+                  rows={3}
+                  maxLength={500}
+                  className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-sm leading-6 text-slate-800 outline-none transition focus:border-blue-400 focus:bg-white focus:ring-2 focus:ring-blue-100"
+                  placeholder="Anything else you’d like me to know..."
+                />
+              </label>
+
+              {submitError && (
+                <p className="rounded-xl border border-red-100 bg-red-50 px-3.5 py-3 text-xs leading-5 text-red-600">
+                  {submitError}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 px-5 py-3.5 text-sm font-bold text-white shadow-[0_10px_25px_rgba(37,99,235,0.18)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {submitting ? "Submitting…" : "Request Resume →"}
+              </button>
+            </form>
+          </>
+        ) : (
+          <div className="py-8 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">✓</div>
+            <h2 className="mt-5 text-2xl font-black tracking-tight text-slate-900">Request received</h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-500">
+              Thanks. I’ve received your request and will review it before sharing my resume.
+            </p>
+            <button type="button" onClick={onClose} className="mt-6 rounded-xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-200 hover:text-blue-600">
+              Close
+            </button>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 
 // ============================================================================
 // HERO
@@ -1411,10 +1287,12 @@ function AboutSection() {
               <p>
                 I studied{" "}
                 <span className="font-medium text-slate-800">
-                  a Master's in Economics at Ashoka University
+                  Master&apos;s in Economics at Ashoka University
                 </span>{" "}
                 from 2019–2021, which shaped the way I think about markets,
-                businesses and decision-making.
+                businesses and decision-making. This combination has shaped
+                how I approach problems — bringing together structured
+                thinking, data and commercial context.
               </p>
 
               <p>
@@ -1425,11 +1303,7 @@ function AboutSection() {
                 revenue opportunities.
               </p>
 
-              <p>
-                I’m particularly interested in problems where the answer
-                requires more than a dashboard — connecting data, commercial
-                context and execution to create measurable outcomes.
-              </p>
+
             </motion.div>
           </motion.div>
 
@@ -2355,6 +2229,57 @@ function WorkSection() {
                     </div>
                   </div>
                 </motion.button>
+
+                {isActive && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0, y: -8 }}
+                    animate={{ opacity: 1, height: "auto", y: 0 }}
+                    exit={{ opacity: 0, height: 0, y: -8 }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
+                    className="mt-3 overflow-hidden md:hidden"
+                  >
+                    <div className="overflow-hidden rounded-[18px] border border-blue-100/80 bg-white/88 shadow-[0_12px_32px_rgba(30,64,175,0.055)] backdrop-blur-sm">
+                      <div className="border-b border-blue-50 px-5 py-5">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-blue-600">
+                          {initiative.category}
+                        </p>
+                        {initiative.status && (
+                          <div className="mt-2 flex items-center gap-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-emerald-600">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                            {initiative.status}
+                          </div>
+                        )}
+                        <h3 className="mt-1 text-xl font-black tracking-[-0.025em] text-slate-900">
+                          {initiative.caseTitle ?? initiative.title}
+                        </h3>
+                        <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                          {initiative.metricLabel}
+                        </p>
+                      </div>
+
+                      <div className="grid gap-0">
+                        <div className="border-b border-blue-50 px-5 py-5">
+                          <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">The problem</p>
+                          <p className="text-xs leading-5 text-slate-600">{initiative.context}</p>
+                        </div>
+                        <div className="border-b border-blue-50 px-5 py-5">
+                          <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.18em] text-slate-400">What I did</p>
+                          <p className="text-xs leading-5 text-slate-600">{initiative.whatIOwned}</p>
+                          <p className="mt-3 text-xs leading-5 text-slate-500">{initiative.approach}</p>
+                        </div>
+                        <div className="px-5 py-5">
+                          <p className="mb-2 text-[9px] font-bold uppercase tracking-[0.18em] text-blue-600">What changed</p>
+                          <p className="text-xs font-medium leading-5 text-slate-700">{initiative.whatChanged}</p>
+                          <div className="mt-4 flex flex-wrap gap-x-2 gap-y-1.5">
+                            {initiative.tools.map((tool, toolIndex) => (
+                              <span key={toolIndex} className="rounded-full bg-slate-50 px-2 py-1 text-[9px] font-medium text-slate-500">{tool}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </motion.div>
             );
           })}
@@ -2371,7 +2296,7 @@ function WorkSection() {
               animate={{ opacity: 1, height: "auto", y: 0 }}
               exit={{ opacity: 0, height: 0, y: -8 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
-              className="overflow-hidden"
+              className="hidden overflow-hidden md:block"
             >
               <div className="mt-3 overflow-hidden rounded-[18px] border border-blue-100/80 bg-white/88 shadow-[0_12px_32px_rgba(30,64,175,0.055)] backdrop-blur-sm">
                 {/* Detail header */}
